@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="burgerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Burger">
+          <Key>
+            <PropertyRef Name="Burger_id" />
+          </Key>
+          <Property Name="Burger_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Burger" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Fries">
+          <Key>
+            <PropertyRef Name="Fries_id" />
+          </Key>
+          <Property Name="Fries_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fries" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="main">
+          <Key>
+            <PropertyRef Name="orderID" />
+          </Key>
+          <Property Name="orderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="10" />
+          <Property Name="Burger_id" Type="int" />
+          <Property Name="Fries_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_main_Burger">
+          <End Role="Burger" Type="Self.Burger" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="main" Type="Self.main" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Burger">
+              <PropertyRef Name="Burger_id" />
+            </Principal>
+            <Dependent Role="main">
+              <PropertyRef Name="Burger_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_main_Fries">
+          <End Role="Fries" Type="Self.Fries" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="main" Type="Self.main" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fries">
+              <PropertyRef Name="Fries_id" />
+            </Principal>
+            <Dependent Role="main">
+              <PropertyRef Name="Fries_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="burgerModelStoreContainer">
+          <EntitySet Name="Burger" EntityType="Self.Burger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fries" EntityType="Self.Fries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="main" EntityType="Self.main" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_main_Burger" Association="Self.FK_main_Burger">
+            <End Role="Burger" EntitySet="Burger" />
+            <End Role="main" EntitySet="main" />
+          </AssociationSet>
+          <AssociationSet Name="FK_main_Fries" Association="Self.FK_main_Fries">
+            <End Role="Fries" EntitySet="Fries" />
+            <End Role="main" EntitySet="main" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="burgerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Burger">
+          <Key>
+            <PropertyRef Name="Burger_id" />
+          </Key>
+          <Property Name="Burger_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Burger1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="mains" Relationship="Self.FK_main_Burger" FromRole="Burger" ToRole="main" />
+        </EntityType>
+        <EntityType Name="Fry">
+          <Key>
+            <PropertyRef Name="Fries_id" />
+          </Key>
+          <Property Name="Fries_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fries" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="mains" Relationship="Self.FK_main_Fries" FromRole="Fries" ToRole="main" />
+        </EntityType>
+        <EntityType Name="main">
+          <Key>
+            <PropertyRef Name="orderID" />
+          </Key>
+          <Property Name="orderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Burger_id" Type="Int32" />
+          <Property Name="Fries_id" Type="Int32" />
+          <NavigationProperty Name="Burger" Relationship="Self.FK_main_Burger" FromRole="main" ToRole="Burger" />
+          <NavigationProperty Name="Fry" Relationship="Self.FK_main_Fries" FromRole="main" ToRole="Fries" />
+        </EntityType>
+        <Association Name="FK_main_Burger">
+          <End Role="Burger" Type="Self.Burger" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="main" Type="Self.main" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Burger">
+              <PropertyRef Name="Burger_id" />
+            </Principal>
+            <Dependent Role="main">
+              <PropertyRef Name="Burger_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_main_Fries">
+          <End Role="Fries" Type="Self.Fry" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="main" Type="Self.main" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fries">
+              <PropertyRef Name="Fries_id" />
+            </Principal>
+            <Dependent Role="main">
+              <PropertyRef Name="Fries_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Burgers" EntityType="Self.Burger" />
+          <EntitySet Name="Fries" EntityType="Self.Fry" />
+          <EntitySet Name="mains" EntityType="Self.main" />
+          <AssociationSet Name="FK_main_Burger" Association="Self.FK_main_Burger">
+            <End Role="Burger" EntitySet="Burgers" />
+            <End Role="main" EntitySet="mains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_main_Fries" Association="Self.FK_main_Fries">
+            <End Role="Fries" EntitySet="Fries" />
+            <End Role="main" EntitySet="mains" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="burgerModelStoreContainer" CdmEntityContainer="Entities1">
+          <EntitySetMapping Name="Burgers">
+            <EntityTypeMapping TypeName="burgerModel.Burger">
+              <MappingFragment StoreEntitySet="Burger">
+                <ScalarProperty Name="Burger_id" ColumnName="Burger_id" />
+                <ScalarProperty Name="Burger1" ColumnName="Burger" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fries">
+            <EntityTypeMapping TypeName="burgerModel.Fry">
+              <MappingFragment StoreEntitySet="Fries">
+                <ScalarProperty Name="Fries_id" ColumnName="Fries_id" />
+                <ScalarProperty Name="Fries" ColumnName="Fries" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mains">
+            <EntityTypeMapping TypeName="burgerModel.main">
+              <MappingFragment StoreEntitySet="main">
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Burger_id" ColumnName="Burger_id" />
+                <ScalarProperty Name="Fries_id" ColumnName="Fries_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
